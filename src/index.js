@@ -1,47 +1,34 @@
+// document.addEventListener("DOMContentLoaded", () => {
+//   // your code here
+// });
+
+
 let taskList = document.querySelector("#tasks")
+
 const newTask = document.querySelector("#create-task-form")
-
-
-let redList = document.createElement("ul")
-redList.id = "red";
-taskList.append(redList);
-
-let yellowList = document.createElement("ul");
-yellowList.id = "yellow";
-taskList.append(yellowList);
-
-let greenList = document.createElement("ul")
-greenList.id = "green";
-taskList.append(greenList);
-
-choosePriority(newTask)
 
 newTask.addEventListener("submit", (e) => {
   e.preventDefault()
+  // debugger
   let ourForm = e.target
-  let taskStr = ourForm["new-task-description"].value
-  let taskPriority = ourForm["priority"].value
-  takeNewTask(taskStr, taskPriority)
+  let taskInput = ourForm["new-task-description"]
+  let taskStr = taskInput.value
+  
+  takeNewTask(taskStr)
+  
 })
 
-function takeNewTask(taskStr, taskPriority) { 
-  let taskLi = document.createElement("li");
-  taskLi.innerText = taskStr;
-  taskLi.style.color = taskPriority;
-  if (taskPriority === "red") {
-    redList.append(taskLi);
-  } else if (taskPriority === "yellow") {
-    yellowList.append(taskLi);
-  } else {
-    greenList.append(taskLi);
-  }
+function takeNewTask(aTaskStr) {
+  let taskLi = document.createElement("li")
+  taskLi.innerText = aTaskStr
+  taskList.append(taskLi)
   
   taskLi.addEventListener("click", () => {
     taskLi.remove()
   })
 }
 
-function choosePriority(object){
+newTask.onsubmit = function(){
   let priority = ["red", "yellow", "green"]
 
   let select = document.createElement("select");
@@ -53,12 +40,12 @@ function choosePriority(object){
     option.value = val;
     option.text = val.charAt(0).toUpperCase() + val.slice(1);
     select.append(option)
+    
   }
 
-  let label = document.createElement("label")
-  label.innerText = "Choose task priority: "
-  label.htmlFor = "priority";
-  
-  object.prepend(select)
-  object.prepend(label)
+    let label = document.createElement("label")
+    label.innerHTML = "Choose your priority: "
+    label.htmlfor = "priority";
+    
+    newTask.appendChild(label).appendChild(select)
 }
